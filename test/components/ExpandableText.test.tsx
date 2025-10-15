@@ -3,6 +3,7 @@ import ExpandableText from "../../src/components/ExpandableText";
 import userEvent from "@testing-library/user-event";
 
 describe("ExpandableText", () => {
+  const limit = 255;
   const shortText = "Short text content.";
   const longText = "A".repeat(300);
 
@@ -16,7 +17,7 @@ describe("ExpandableText", () => {
   it("renders truncated text with 'Show More' button for long text", () => {
     render(<ExpandableText text={longText} />);
 
-    const truncated = longText.substring(0, 255);
+    const truncated = longText.substring(0, limit);
     expect(screen.getByText(new RegExp(`${truncated}...`))).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /show more/i })

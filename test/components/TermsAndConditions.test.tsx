@@ -3,10 +3,18 @@ import TermsAndConditions from "../../src/components/TermsAndConditions";
 import userEvent from "@testing-library/user-event";
 
 describe("TermsAndConditions", () => {
-  it("should renders heading and terms text", () => {
+  const renderComponent = () => {
     render(<TermsAndConditions />);
+    return {
+      heading: screen.getByRole("heading"),
+      checkbox: screen.getByRole("checkbox"),
+      button: screen.getByRole("button"),
+    };
+  };
 
-    const heading = screen.getByRole("heading");
+  it("should renders heading and terms text", () => {
+    const { heading } = renderComponent();
+
     expect(heading).toBeInTheDocument();
     expect(heading).toHaveTextContent(/Terms & Conditions/i);
 
@@ -23,9 +31,8 @@ describe("TermsAndConditions", () => {
   });
 
   it("checkbox should uncheck initially", () => {
-    render(<TermsAndConditions />);
+    const { checkbox } = renderComponent();
 
-    const checkbox = screen.getByRole("checkbox");
     expect(checkbox).toBeInTheDocument();
     expect(checkbox).not.toBeChecked();
   });
