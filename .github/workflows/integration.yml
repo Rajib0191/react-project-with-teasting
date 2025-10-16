@@ -1,0 +1,54 @@
+name: Integration
+
+on:
+  push: 
+    branches: ['master']
+  pull_request:
+    branches: ["master"]
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Runner (virtual machine) to use
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+      - name: "Checkout Repositories"
+        uses: actions/checkout@v4   # Fetches your repo’s code
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4 
+        with:
+          node-version: ${{matrix.node-version}}
+          cache: 'npm'
+
+      - name: "Installing Dependencies"
+        run: npm i
+
+      - name: "Build Command"
+        run: npm run build
+
+  unit-tests:  # You can name it anything you want (e.g., test, unit-tests, etc.).
+    runs-on: ubuntu-latest  # Runner (virtual machine) to use
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+      - name: "Checkout Repositories"
+        uses: actions/checkout@v4   # Fetches your repo’s code
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4 
+        with:
+          node-version: ${{matrix.node-version}}
+          cache: 'npm'
+
+      - name: "Installing Dependencies"
+        run: npm i
+
+      - name: "Run test case"
+        run: npm run test
